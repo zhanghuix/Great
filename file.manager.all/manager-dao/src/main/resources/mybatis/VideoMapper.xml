@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.file.manager.dao.business.VideoDao">
+
+	<resultMap id="resultMap" type="com.file.manager.entity.Video">
+        <result property="id" column="ID"/>
+        <result property="no" column="NO"/>
+        <result property="name" column="NAME"/>
+        <result property="typeNo" column="TYPE_NO"/>
+        <result property="scenes" column="SCENES"/>
+        <result property="address" column="ADDRESS"/>
+        <result property="videotime" column="VIDEOTIME"/>
+        <result property="size" column="SIZE"/>
+        <result property="path" column="PATH"/>
+        <result property="folderNo" column="FOLDER_NO"/>
+        <result property="createtime" column="CREATETIME"/>
+        <result property="userNo" column="USER_NO"/>
+        <result property="decription" column="DECRIPTION"/>
+        <result property="otherName" column="OTHERNAME"/>
+        
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="columns">
+		ID,NO,NAME,TYPE_NO,SCENES,ADDRESS,VIDEOTIME,SIZE,PATH,FOLDER_NO,CREATETIME,USER_NO,DECRIPTION,OTHERNAME
+	</sql>
+	
+	<!-- 获取用户: 输出直接映射到对象 -->
+	<select id="get" parameterType="String" resultMap="resultMap">
+		SELECT <include refid="columns" />
+		FROM db_video
+		WHERE no=#{no}
+	</select>
+	
+
+	<!-- 查询用户, 不分页 -->
+	<select id="queryAll" parameterType="Video" resultMap="resultMap">
+		SELECT <include refid="columns" />
+		FROM db_video
+		<where>
+	       <if test="no != null and no != ''">
+				AND no = #{no}
+		   </if>
+	       <if test="name != null and name != ''">
+				AND NAME = #{name}
+		   </if>
+	       <if test="typeNo != null and typeNo != ''">
+				AND TYPE_NO = #{typeNo}
+		   </if>
+	       <if test="scenes != null and scenes != ''">
+				AND SCENES = #{scenes}
+		   </if>
+	       <if test="address != null and address != ''">
+				AND ADDRESS = #{address}
+		   </if>
+	       <if test="videotime != null and videotime != ''">
+				AND VIDEOTIME = #{videotime}
+		   </if>
+	       <if test="size != null and size != ''">
+				AND SIZE = #{size}
+		   </if>
+	       <if test="path != null and path != ''">
+				AND PATH = #{path}
+		   </if>
+	       <if test="folderNo != null and folderNo != ''">
+				AND FOLDER_NO = #{folderNo}
+		   </if>
+	       <if test="createtime != null and createtime != ''">
+				AND CREATETIME = #{createtime}
+		   </if>
+	       <if test="userNo != null and userNo != ''">
+				AND USER_NO = #{userNo}
+		   </if>
+	       <if test="decription != null and decription != ''">
+				AND DECRIPTION = #{decription}
+		   </if>
+		   <if test="otherName != null and otherName != ''">
+				AND OTHERNAME = #{otherName}
+		   </if>
+		</where>
+		order by CREATETIME desc
+	</select>
+	
+	<!-- 分页查询 -->
+	<select id="queryPage" resultMap="resultMap">
+		SELECT <include refid="columns" />
+		FROM db_video
+		<where>
+	       <if test="searchFields.no != null and searchFields.no != ''">
+				AND no = #{searchFields.no}
+			</if>
+	       <if test="searchFields.name != null and searchFields.name != ''">
+				AND NAME = #{searchFields.name}
+			</if>
+	       <if test="searchFields.typeNo != null and searchFields.typeNo != ''">
+				AND TYPE_NO = #{searchFields.typeNo}
+			</if>
+	       <if test="searchFields.scenes != null and searchFields.scenes != ''">
+				AND SCENES = #{searchFields.scenes}
+			</if>
+	       <if test="searchFields.address != null and searchFields.address != ''">
+				AND ADDRESS = #{searchFields.address}
+			</if>
+	       <if test="searchFields.videotime != null and searchFields.videotime != ''">
+				AND VIDEOTIME = #{searchFields.videotime}
+			</if>
+	       <if test="searchFields.size != null and searchFields.size != ''">
+				AND SIZE = #{searchFields.size}
+			</if>
+	       <if test="searchFields.path != null and searchFields.path != ''">
+				AND PATH = #{searchFields.path}
+			</if>
+	       <if test="searchFields.folderNo != null and searchFields.folderNo != ''">
+				AND FOLDER_NO = #{searchFields.folderNo}
+			</if>
+	       <if test="searchFields.createtime != null and searchFields.createtime != ''">
+				AND CREATETIME = #{searchFields.createtime}
+			</if>
+	       <if test="searchFields.userNo != null and searchFields.userNo != ''">
+				AND USER_NO = #{searchFields.userNo}
+			</if>
+	       <if test="searchFields.decription != null and searchFields.decription != ''">
+				AND DECRIPTION = #{searchFields.decription}
+			</if>
+			<if test="searchFields.otherName != null and searchFields.otherName != ''">
+				AND OTHERNAME = #{searchFields.otherName}
+		   </if>
+		</where>
+		order by CREATETIME desc
+	</select>
+	
+	<!-- 新增 -->
+	<insert id="insert" parameterType="Video">
+		INSERT INTO db_video (
+        	no,
+        	NAME,
+        	TYPE_NO,
+        	SCENES,
+        	ADDRESS,
+        	VIDEOTIME,
+        	SIZE,
+        	PATH,
+        	FOLDER_NO,
+        	CREATETIME,
+        	USER_NO,
+        	DECRIPTION,
+        	OTHERNAME
+		) VALUES (
+        	#{no},
+        	#{name},
+        	#{typeNo},
+        	#{scenes},
+        	#{address},
+        	#{videotime},
+        	#{size},
+        	#{path},
+        	#{folderNo},
+        	#{createtime},
+        	#{userNo},
+        	#{decription},
+        	#{otherName}
+		)
+	</insert>
+	
+	<!-- 更新 -->
+	<update id="update" >
+        UPDATE db_video
+		<set>
+			<if test="name != null and name != ''">
+				NAME = #{name},
+			</if>
+			<if test="typeNo != null and typeNo != ''">
+				TYPE_NO = #{typeNo},
+			</if>
+			<if test="scenes != null and scenes != ''">
+				SCENES = #{scenes},
+			</if>
+			<if test="address != null and address != ''">
+				ADDRESS = #{address},
+			</if>
+			<if test="videotime != null and videotime != ''">
+				VIDEOTIME = #{videotime},
+			</if>
+			<if test="size != null and size != ''">
+				SIZE = #{size},
+			</if>
+			<if test="path != null and path != ''">
+				PATH = #{path},
+			</if>
+			<if test="folderNo != null and folderNo != ''">
+				FOLDER_NO = #{folderNo},
+			</if>
+			<if test="createtime != null and createtime != ''">
+				CREATETIME = #{createtime},
+			</if>
+			<if test="userNo != null and userNo != ''">
+				USER_NO = #{userNo},
+			</if>
+			<if test="decription != null and decription != ''">
+				DECRIPTION = #{decription},
+			</if>
+			<if test="otherName != null and otherName != ''">
+				OTHERNAME = #{otherName}
+		   </if>
+		</set>
+        WHERE 
+	        NO = #{no}
+	</update>
+	
+	<!-- 删除用户 -->
+	<delete id="delete" parameterType="String">
+	     DELETE FROM db_video WHERE no=#{no}
+	</delete>
+</mapper> 

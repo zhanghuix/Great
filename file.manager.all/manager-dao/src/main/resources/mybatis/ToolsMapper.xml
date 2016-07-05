@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.file.manager.dao.business.ToolsDao">
+
+	<resultMap id="resultMap" type="com.file.manager.entity.Tools">
+        <result property="id" column="ID"/>
+        <result property="no" column="NO"/>
+        <result property="name" column="NAME"/>
+        <result property="typeNo" column="TYPE_NO"/>
+        <result property="size" column="SIZE"/>
+        <result property="path" column="PATH"/>
+        <result property="folderNo" column="FOLDER_NO"/>
+        <result property="version" column="VERSION"/>
+        <result property="description" column="DESCRIPTION"/>
+        <result property="createtime" column="CREATETIME"/>
+        <result property="userNo" column="USER_NO"/>
+         <result property="otherName" column="OTHERNAME"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="columns">
+		ID,NO,NAME,TYPE_NO,SIZE,PATH,FOLDER_NO,VERSION,DESCRIPTION,CREATETIME,USER_NO,OTHERNAME
+	</sql>
+	
+	<!-- 获取用户: 输出直接映射到对象 -->
+	<select id="get" parameterType="String" resultMap="resultMap">
+		SELECT <include refid="columns" />
+		FROM db_tool
+		WHERE no=#{no}
+	</select>
+	
+
+	<!-- 查询用户, 不分页 -->
+	<select id="queryAll" parameterType="Tools" resultMap="resultMap">
+		SELECT <include refid="columns" />
+		FROM db_tool
+		<where>
+	       <if test="no != null and no != ''">
+				AND no = #{no}
+		   </if>
+	       <if test="name != null and name != ''">
+				AND NAME = #{name}
+		   </if>
+	       <if test="typeNo != null and typeNo != ''">
+				AND TYPE_NO = #{typeNo}
+		   </if>
+	       <if test="size != null and size != ''">
+				AND SIZE = #{size}
+		   </if>
+	       <if test="path != null and path != ''">
+				AND PATH = #{path}
+		   </if>
+	       <if test="folderNo != null and folderNo != ''">
+				AND FOLDER_NO = #{folderNo}
+		   </if>
+	       <if test="version != null and version != ''">
+				AND VERSION = #{version}
+		   </if>
+	       <if test="description != null and description != ''">
+				AND DESCRIPTION = #{description}
+		   </if>
+	       <if test="createtime != null and createtime != ''">
+				AND CREATETIME = #{createtime}
+		   </if>
+	       <if test="userNo != null and userNo != ''">
+				AND USER_NO = #{userNo}
+		   </if>
+		   <if test="otherName != null and otherName != ''">
+				AND OTHERNAME = #{otherName}
+		   </if>
+		</where>
+		order by CREATETIME desc
+	</select>
+	
+	<!-- 分页查询 -->
+	<select id="queryPage" resultMap="resultMap">
+		SELECT <include refid="columns" />
+		FROM db_tool
+		<where>
+	       <if test="searchFields.no != null and searchFields.no != ''">
+				AND NO = #{searchFields.no}
+			</if>
+	       <if test="searchFields.name != null and searchFields.name != ''">
+				AND NAME = #{searchFields.name}
+			</if>
+	       <if test="searchFields.typeNo != null and searchFields.typeNo != ''">
+				AND TYPE_NO = #{searchFields.typeNo}
+			</if>
+	       <if test="searchFields.size != null and searchFields.size != ''">
+				AND SIZE = #{searchFields.size}
+			</if>
+	       <if test="searchFields.path != null and searchFields.path != ''">
+				AND PATH = #{searchFields.path}
+			</if>
+	       <if test="searchFields.folderNo != null and searchFields.folderNo != ''">
+				AND FOLDER_NO = #{searchFields.folderNo}
+			</if>
+	       <if test="searchFields.version != null and searchFields.version != ''">
+				AND VERSION = #{searchFields.version}
+			</if>
+	       <if test="searchFields.description != null and searchFields.description != ''">
+				AND DESCRIPTION = #{searchFields.description}
+			</if>
+	       <if test="searchFields.createtime != null and searchFields.createtime != ''">
+				AND CREATETIME = #{searchFields.createtime}
+			</if>
+	       <if test="searchFields.userNo != null and searchFields.userNo != ''">
+				AND USER_NO = #{searchFields.userNo}
+			</if>
+			<if test="searchFields.otherName != null and searchFields.otherName != ''">
+				AND OTHERNAME = #{searchFields.otherName}
+		   </if>
+		</where>
+		 order by CREATETIME desc
+	</select>
+	
+	<!-- 新增 -->
+	<insert id="insert" parameterType="Tools">
+		INSERT INTO db_tool (
+        	no,
+        	NAME,
+        	TYPE_NO,
+        	SIZE,
+        	PATH,
+        	FOLDER_NO,
+        	VERSION,
+        	DESCRIPTION,
+        	CREATETIME,
+        	USER_NO,
+        	OTHERNAME
+		) VALUES (
+        	#{no},
+        	#{name},
+        	#{typeNo},
+        	#{size},
+        	#{path},
+        	#{folderNo},
+        	#{version},
+        	#{description},
+        	#{createtime},
+        	#{userNo},
+        	#{otherName}
+		)
+	</insert>
+	
+	<!-- 更新 -->
+	<update id="update" >
+        UPDATE db_tool
+		<set>
+			<if test="name != null and name != ''">
+				NAME = #{name},
+			</if>
+			<if test="typeNo != null and typeNo != ''">
+				TYPE_NO = #{typeNo},
+			</if>
+			<if test="size != null and size != ''">
+				SIZE = #{size},
+			</if>
+			<if test="path != null and path != ''">
+				PATH = #{path},
+			</if>
+			<if test="folderNo != null and folderNo != ''">
+				FOLDER_NO = #{folderNo},
+			</if>
+			<if test="version != null and version != ''">
+				VERSION = #{version},
+			</if>
+			<if test="description != null and description != ''">
+				DESCRIPTION = #{description},
+			</if>
+			<if test="createtime != null and createtime != ''">
+				CREATETIME = #{createtime},
+			</if>
+			<if test="userNo != null and userNo != ''">
+				USER_NO = #{userNo}
+			</if>
+			<if test="otherName != null and otherName != ''">
+				OTHERNAME = #{otherName}
+		   </if>
+		</set>
+        WHERE 
+	        NO = #{no}
+	</update>
+	
+	<!-- 删除用户 -->
+	<delete id="delete" parameterType="String">
+	     DELETE FROM db_tool WHERE no=#{no}
+	</delete>
+</mapper> 

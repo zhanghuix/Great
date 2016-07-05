@@ -1,0 +1,81 @@
+body {
+	background-color: #fafafa;
+}
+
+.mainDiv {
+	border-style: solid;
+	border-color: #ddf9fb;
+	margin-left: 1.5%;
+	margin-right: 20%;
+	width: 97%;
+	border-bottom: 1px;
+	border-left: 1px;
+	border-right: 1px;
+}
+/**底页面*/
+.bottomDiv {
+	border-style: solid;
+	border-color: #ddf9fb;
+	margin-left: 1.5%;
+	margin-right: 20%;
+	top:115%;
+	width: 97%;
+	border-left: 1px;
+	border-right: 1px;
+	border-top: 1px;
+	position: absolute; 
+}
+/**分页page*/
+.fenyeDiv {
+	border-style: solid;
+	border-color: #ddf9fb;
+	margin-left: 1.5%;
+	margin-right: 20%;
+	margin-top:2%;
+	width: 97%;
+	border:0px;
+}
+
+/* 以下控制文件夹列表和文件列表页样式 */
+
+/*图片文件夹列表*/
+.imgTable{
+	padding-left: 25px;padding-right: 30px;padding-top: 10px;
+}
+
+/*文件夹下的文件列表*/
+.imgTablelist{
+	padding-left: 15px;padding-right: 15px;padding-top: 10px;
+}
+
+.STYLE4 {
+	color: #03515d;
+	font-size: 12px;
+	text-align: left;
+}
+/*缩略图上文字*/
+.folderName{
+	font-size: 12px;
+	color: #c0c0c0;
+}
+/*缩略图上的文字*/
+.smaiImg_p{
+	text-align: left;
+	font-size: 12px;
+	font-weight: lighter;
+}
+
+/**缩略图大小*/
+.smaiImg{
+	width:130px;height:85px;
+}
+
+/**控制大图*/
+.maxImg{
+	display: none;
+	left: 40%;
+	top: 50%;
+	margin-top:-20%;
+	width:58%; 
+	background: transparent;
+}

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="user">
+	<!-- 以下与实体类的中字段一致 -->
+	
+	<sql id="selectId">
+		id,
+		no,
+		name,
+		loginName,
+		pwd,
+		age,
+		sex,
+		tel,
+		email,
+		createTime,
+		address,
+		mark,
+		status,
+		type
+	</sql>
+	
+	<!--resultType="User" 每返回一条结果封装到User里 -->
+	<select id="query" resultType="User" parameterType="java.util.HashMap">
+		select
+		<include refid="selectId" />
+		,(select r.name from db_role r where no in (SELECT ur.role_no FROM db_user_role ur
+		WHERE ur.user_no=u.no)) roleName
+		from db_user u
+		<where>
+			<if test="t.loginName != null and t.loginName != ''">
+				loginName like '%${t.loginName}%'
+				</if>
+			<if test="t.name != null and t.name != ''">
+				and name like '%${t.name}%'
+				</if>
+			
+		</where>
+	</select>
+	<!-- 总记录数 -->
+	<select id="count" parameterType="User" resultType="int">
+		select count(0) from db_user
+		<where>
+			<if test="loginName != null and loginName != ''">
+				loginName like '%${loginName}%'
+				</if>
+			<if test="name != null and name != ''">
+				and name like '%${name}%'
+				</if>
+		</where>
+	</select>
+	<!-- 增加用户 -->
+	<!-- <insert id="add" parameterType="User">
+		insert into user( userName,
+		userPassword,
+		userNickname, userRealname,
+		userAge, userSex, userAddress,
+		userPhone,
+		userMail, userQQ, level,
+		province,
+		city,
+		bankName,
+		branchBank,
+		subbranchBank,
+		openBankName,
+		bankAccountName,
+		bankAccount,
+		accountType,
+		pay,
+		mark,
+		status,
+		parentNumber )
+		values (#{userName},
+		#{userPassword},
+		#{userNickname}, #{userRealname},
+		#{userAge},
+		#{userSex},
+		#{userAddress}, #{userPhone}, #{userMail},
+		#{userQQ},
+		#{level},
+		#{province},
+		#{city},
+		#{bankName}, #{branchBank},
+		#{subbranchBank},
+		#{openBankName},
+		#{bankAccountName}, #{bankAccount}, #{accountType},
+		#{pay},
+		#{mark},#{status},
+		#{parentNumber})
+	</insert> -->
+	<insert id="add" parameterType="User">
+		insert into db_user( no,name,loginName,
+		pwd,
+		age, sex, address,
+		tel,
+		email, 
+		mark,
+		status,
+		type,
+		createTime)
+		values (#{no},#{name},#{loginName},
+		#{pwd},
+		#{age},
+		#{sex},
+		#{address}, #{tel}, #{email},
+		#{mark},#{status},#{type},
+		#{createTime})
+	</insert>
+	
+
+	<delete id="deleteById" parameterType="String">
+		delete from db_user where
+		no=#{no}
+	</delete>
+	<select id="getById" parameterType="String" resultType="User">
+		select
+		<include refid="selectId" />
+		from db_user where no=#{no}
+	</select>
+	<update id="update" parameterType="User">
+		update db_user
+		<set>
+			<if test="name != null and name != ''">
+				name=#{name},
+			</if>
+			<if test="loginName != null and loginName != ''">
+				loginName=#{loginName},
+			</if>
+			<if test="pwd != null and pwd != ''">
+				pwd=#{pwd},
+			</if>
+			<if test="age != null and age != ''">
+				age=#{age},
+			</if>
+			<if test="sex != null and sex != ''">
+				sex=#{sex},
+			</if>
+			<if test="address != null and address != ''">
+				address=#{address},
+			</if>
+			<if test="tel != null and tel != ''">
+				tel=#{tel},
+			</if>
+			<if test="email != null and email != ''">
+				email=#{email},
+			</if>
+			<if test="type != null and type != ''">
+				type=#{type},
+			</if>
+			<if test="mark != null and mark != ''">
+				mark=#{mark},
+			</if>
+			<if test="status != null and status != ''">
+				status=#{status},
+			</if>
+			
+		</set>
+		where no=#{no}
+	</update>
+	
+	<!-- 验证用户登陆 -->
+	<select id="countUser" parameterType="User" resultType="int">
+	    select count(*) from db_user where 
+	    loginName=#{loginName} and pwd=#{pwd}
+	</select>
+	
+	<!-- 根据用户名查出userId -->
+	<select id="queryUserName" parameterType="String" resultType="User">
+	  select
+	  <include refid="selectId"/>
+	  from db_user where loginName=#{loginName} limit 1
+	</select>
+</mapper>

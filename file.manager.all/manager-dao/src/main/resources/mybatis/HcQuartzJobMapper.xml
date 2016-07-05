@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.file.manager.dao.HcQuartzJobDao">
+
+	<resultMap id="resultMap" type="com.file.manager.entity.HcQuartzJob">
+        <result property="id" column="id"/>
+        <result property="jobName" column="jobName"/>
+        <result property="jobGroup" column="jobGroup"/>
+        <result property="jobKey" column="jobKey"/>
+        <result property="state" column="state"/>
+        <result property="desc" column="desc"/>
+        <result property="jobTime" column="jobTime"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="columns">
+		id,jobName,jobGroup,jobKey,state,desc,jobTime
+	</sql>
+	
+	<!-- 获取用户: 输出直接映射到对象 -->
+	<select id="get" parameterType="Long" resultType="HcQuartzJob">
+		SELECT <include refid="columns" />
+		FROM hc_quartz_job
+		WHERE id=#{id}
+	</select>
+	
+
+	<!-- 查询用户, 不分页 -->
+	<select id="searchPage" resultMap="resultMap">
+		SELECT j.id,j.jobName,j.jobGroup,j.jobKey,j.state,j.desc,t.jobTime
+		FROM hc_quartz_job j left join hc_jobtime t on j.jobTime=t.jobNo
+		<where>
+	       <if test="jobName != null and jobName != ''">
+				AND jobName = #{jobName}
+		   </if>
+	       <if test="jobGroup != null and jobGroup != ''">
+				AND jobGroup = #{jobGroup}
+		   </if>
+	       <if test="jobKey != null and jobKey != ''">
+				AND jobKey = #{jobKey}
+		   </if>
+	       <if test="state != null and state != ''">
+				AND state = #{state}
+		   </if>
+	       <if test="desc != null and desc != ''">
+				AND desc = #{desc}
+		   </if>
+	       <if test="jobTime != null and jobTime != ''">
+				AND jobTime = #{jobTime}
+		   </if>
+		</where>
+	</select>
+	
+	<!-- 分页查询 -->
+	<select id="query" resultMap="resultMap">
+		SELECT j.id,j.jobName,j.jobGroup,j.jobKey,j.state,j.desc,t.jobTime
+		FROM hc_quartz_job j left join hc_jobtime t on j.jobTime=t.jobNo
+		<where>
+	       <if test="searchFields.jobName != null and searchFields.jobName != ''">
+				AND jobName = #{searchFields.jobName}
+			</if>
+	       <if test="searchFields.jobGroup != null and searchFields.jobGroup != ''">
+				AND jobGroup = #{searchFields.jobGroup}
+			</if>
+	       <if test="searchFields.jobKey != null and searchFields.jobKey != ''">
+				AND jobKey = #{searchFields.jobKey}
+			</if>
+	       <if test="searchFields.state != null and searchFields.state != ''">
+				AND state = #{searchFields.state}
+			</if>
+	       <if test="searchFields.desc != null and searchFields.desc != ''">
+				AND desc = #{searchFields.desc}
+			</if>
+	       <if test="searchFields.jobTime != null and searchFields.jobTime != ''">
+				AND jobTime = #{searchFields.jobTime}
+			</if>
+		</where>
+	</select>
+	
+	<!-- 新增 -->
+	<insert id="insert" parameterType="HcQuartzJob" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO hc_quartz_job (
+        	jobName,
+        	jobGroup,
+        	jobKey,
+        	state,
+        	desc,
+        	jobTime
+		) VALUES (
+        	#{jobName},
+        	#{jobGroup},
+        	#{jobKey},
+        	#{state},
+        	#{desc},
+        	#{jobTime}
+		)
+	</insert>
+	
+	<!-- 更新 -->
+	<update id="update" >
+        UPDATE hc_quartz_job
+		<set>
+			<if test="jobName != null and jobName != ''">
+				jobName = #{jobName},
+			</if>
+			<if test="jobGroup != null and jobGroup != ''">
+				jobGroup = #{jobGroup},
+			</if>
+			<if test="jobKey != null and jobKey != ''">
+				jobKey = #{jobKey},
+			</if>
+			<if test="state != null and state != ''">
+				state = #{state},
+			</if>
+			<if test="desc != null and desc != ''">
+				desc = #{desc},
+			</if>
+			<if test="jobTime != null and jobTime != ''">
+				jobTime = #{jobTime}
+			</if>
+		</set>
+        WHERE 
+	        id = #{id}
+	</update>
+	
+	<update id="updateState" >
+        UPDATE hc_quartz_job
+		<set>
+			<if test="jobName != null and jobName != ''">
+				jobName = #{jobName},
+			</if>
+			<if test="jobGroup != null and jobGroup != ''">
+				jobGroup = #{jobGroup},
+			</if>
+			<if test="state != null and state != ''">
+				state = #{state},
+			</if>
+			<if test="desc != null and desc != ''">
+				desc = #{desc},
+			</if>
+			<if test="jobTime != null and jobTime != ''">
+				jobTime = #{jobTime}
+			</if>
+		</set>
+        WHERE 
+	        jobKey = #{jobKey}
+	</update>
+	
+	<!-- 删除用户 -->
+	<delete id="delete" parameterType="Long">
+	     DELETE FROM hc_quartz_job WHERE id=#{id}
+	</delete>
+	
+	<select id="queryJobByJobKey" parameterType="String" resultMap="resultMap">
+		SELECT j.id,j.jobGroup,t.jobTime,j.jobKey
+		FROM hc_quartz_job j left join hc_jobtime t on j.jobTime=t.jobNo where j.jobKey=#{jobKey}
+	</select>	
+</mapper> 

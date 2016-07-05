@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.file.manager.dao.business.FileAllDao">
+
+	<resultMap id="resultMap" type="com.file.manager.entity.FileAll">
+		<result property="no" column="NO" />
+		<result property="name" column="NAME" />
+		<result property="typeNo" column="TYPE_NO" />
+		<result property="size" column="SIZE" />
+		<result property="folderNo" column="FOLDER_NO" />
+		<result property="createtime" column="CREATETIME" />
+		<result property="userNo" column="USER_NO" />
+		<result property="otherName" column="OTHERNAME" />
+		<result property="path" column="PATH" />
+	</resultMap>
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="columns">
+		NO,NAME,TYPE_NO,SIZE,FOLDER_NO,CREATETIME,USER_NO,OTHERNAME,PATH
+	</sql>
+
+	<!-- 分页查询 -->
+	<select id="queryPage" resultMap="resultMap">
+		SELECT
+		<include refid="columns" />
+		FROM db_essay UNION
+		SELECT
+		<include refid="columns" />
+		FROM db_photo UNION
+		SELECT
+		<include refid="columns" />
+		FROM db_video UNION
+		SELECT
+		<include refid="columns" />
+		FROM db_files UNION
+		SELECT
+		<include refid="columns" />
+		FROM db_project UNION
+		SELECT
+		<include refid="columns" />
+		FROM db_tool
+		<where>
+			<if test="searchFields.no != null and searchFields.no != ''">
+				AND no= #{searchFields.no}
+			</if>
+			<if test="searchFields.name != null and searchFields.name != ''">
+				AND NAME = #{searchFields.name}
+			</if>
+			<if test="searchFields.typeNo != null and searchFields.typeNo != ''">
+				AND TYPE_NO = #{searchFields.typeNo}
+			</if>
+			<if test="searchFields.size != null and searchFields.size != ''">
+				AND SIZE = #{searchFields.size}
+			</if>
+			<if test="searchFields.folderNo != null and searchFields.folderNo != ''">
+				AND FOLDER_NO = #{searchFields.folderNo}
+			</if>
+			<if
+				test="searchFields.createtime != null and searchFields.createtime != ''">
+				AND CREATETIME = #{searchFields.createtime}
+			</if>
+			<if test="searchFields.userNo != null and searchFields.userNo != ''">
+				AND USER_NO = #{searchFields.userNo}
+			</if>
+			<if test="searchFields.otherName != null and searchFields.otherName != ''">
+				AND OTHERNAME = #{searchFields.otherName}
+			</if>
+		</where>
+		order by CREATETIME desc
+	</select>
+</mapper> 

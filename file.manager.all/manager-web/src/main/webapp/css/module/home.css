@@ -1,0 +1,78 @@
+
+/***控制整个home页面的div***/
+.homeDiv {
+	height: 460px;
+	width: 80%;
+	margin-top: 2%;
+	margin-left: 10%;
+	position: absolute;
+}
+
+/*********控制浏览按钮***********/
+.fileTag{
+	padding-bottom: 2px;
+	padding-left: 3px;
+	padding-right: 3px;
+	padding-top: 3px;
+	margin-top: -8px;
+	margin-left: 0.5%;
+}
+
+/******控制包裹上传控件div*******/
+.fileDiv{
+	margin-top: 2%;
+	margin-left: 8%;
+	
+}
+.newFileInout{
+	width: 40%;margin-left: 0.5%;height:5%;
+}
+
+/******控制原生file组件*******/
+.fileInput{
+	position: absolute;
+    opacity:0;
+	margin-top: -4.5%;
+	margin-left: 21%; 
+}
+
+/***********控制增加和删除上传行图标*************/
+.addImage{
+	margin-bottom:1%;
+	margin-left: -3%;
+	width: 20px;
+	height: 20px;
+	text-decoration:none;
+}
+/***********开始上传和取消上传按钮*************/
+.up_btn
+{
+/* 	 background-image:url(../../images/artDialog/btn_off.png);
+	background-repeat:no-repeat; 
+	border: 1px solid #d5d5d5;
+	cursor:pointer;
+	font-style:inherit;
+	font-family: cursive;
+	color: #4d4d4d; */
+	height:25px;
+	margin-top: 2%;
+}
+
+/***进度条**/
+
+.bar{
+	width: 36%;margin-left: 8%;margin-top: 5%;
+	text-align: center;
+	font-size: 12px;
+	font-family: cursive;
+	font-style: italic;
+	color:#808080;
+	height: 15px; 
+}
+
+.drop{
+	top:17%;
+	left:80%;
+	position: absolute;
+	z-index: 999;
+}

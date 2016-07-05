@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.file.manager.dao.HcJobtimeDao">
+
+	<resultMap id="resultMap" type="com.file.manager.entity.HcJobtime">
+        <result property="id" column="id"/>
+        <result property="jobNo" column="jobNo"/>
+        <result property="jobTime" column="jobTime"/>
+        <result property="desc" column="desc"/>
+        <result property="createUser" column="createUser"/>
+        <result property="createTime" column="createTime"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="columns">
+		id,jobNo,jobTime,desc,createUser,createTime
+	</sql>
+	
+	<!-- 获取用户: 输出直接映射到对象 -->
+	<select id="get" parameterType="Long" resultType="HcJobtime">
+		SELECT <include refid="columns" />
+		FROM hc_jobtime
+		WHERE id=#{id}
+	</select>
+	
+
+	<!-- 查询用户, 不分页 -->
+	<select id="search" parameterType="map" resultMap="resultMap">
+		SELECT <include refid="columns" />
+		FROM hc_jobtime
+		<where>
+	       <if test="jobNo != null and jobNo != ''">
+				AND jobNo = #{jobNo}
+		   </if>
+	       <if test="jobTime != null and jobTime != ''">
+				AND jobTime = #{jobTime}
+		   </if>
+	       <if test="desc != null and desc != ''">
+				AND desc = #{desc}
+		   </if>
+	       <if test="createUser != null and createUser != ''">
+				AND createUser = #{createUser}
+		   </if>
+	       <if test="createTime != null and createTime != ''">
+				AND createTime = #{createTime}
+		   </if>
+		</where>
+	</select>
+	
+	<select id="queryAll" resultMap="resultMap">
+		SELECT * FROM hc_jobtime
+	</select>
+	
+	
+	<!-- 分页查询 -->
+	<select id="searchPage" resultMap="resultMap">
+		SELECT <include refid="columns" />
+		FROM hc_jobtime
+		<where>
+	       <if test="searchFields.jobNo != null and searchFields.jobNo != ''">
+				AND jobNo = #{searchFields.jobNo}
+			</if>
+	       <if test="searchFields.jobTime != null and searchFields.jobTime != ''">
+				AND jobTime = #{searchFields.jobTime}
+			</if>
+	       <if test="searchFields.desc != null and searchFields.desc != ''">
+				AND desc = #{searchFields.desc}
+			</if>
+	       <if test="searchFields.createUser != null and searchFields.createUser != ''">
+				AND createUser = #{searchFields.createUser}
+			</if>
+	       <if test="searchFields.createTime != null and searchFields.createTime != ''">
+				AND createTime = #{searchFields.createTime}
+			</if>
+		</where>
+	</select>
+	
+	<!-- 新增 -->
+	<insert id="insert" parameterType="HcJobtime" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO hc_jobtime (
+        	jobNo,
+        	jobTime,
+        	desc,
+        	createUser,
+        	createTime
+		) VALUES (
+        	#{jobNo},
+        	#{jobTime},
+        	#{desc},
+        	#{createUser},
+        	#{createTime}
+		)
+	</insert>
+	
+	<!-- 更新 -->
+	<update id="update" >
+        UPDATE hc_jobtime
+		<set>
+			<if test="jobNo != null and jobNo != ''">
+				jobNo = #{jobNo},
+			</if>
+			<if test="jobTime != null and jobTime != ''">
+				jobTime = #{jobTime},
+			</if>
+			<if test="desc != null and desc != ''">
+				desc = #{desc},
+			</if>
+			<if test="createUser != null and createUser != ''">
+				createUser = #{createUser},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				createTime = #{createTime}
+			</if>
+		</set>
+        WHERE 
+	        id = #{id}
+	</update>
+	
+	<!-- 删除用户 -->
+	<delete id="delete" parameterType="Long">
+	     DELETE FROM hc_jobtime WHERE id=#{id}
+	</delete>
+</mapper> 
